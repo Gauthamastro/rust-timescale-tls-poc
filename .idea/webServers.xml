@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="baf6f29c-2ceb-4b56-87c3-136c86dd613e" name="SGX Machine">
+        <fileTransfer rootFolder="/home/ec2-user/sgx" accessType="SFTP" host="35.154.63.185" port="22" sshConfigId="fdd51f27-17b4-480e-b85e-6bab91c419de" sshConfig="ec2-user@35.154.63.185:22 key" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="35.154.63.185" id="fdd51f27-17b4-480e-b85e-6bab91c419de" keyPath="$USER_HOME$/Documents/AWS keys/AWS_mumbai.pem" port="22" nameFormat="DESCRIPTIVE" username="ec2-user" useOpenSSHConfig="true" />
+    </configs>
+  </component>
+</project>

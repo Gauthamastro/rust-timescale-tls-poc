@@ -1,29 +1,30 @@
-use native_tls::{Certificate, TlsConnector};
-use postgres_native_tls::{MakeTlsConnector};
+#![feature(async_closure)]
+use std::sync::Arc;
+use governor::{Quota, RateLimiter};
+use nonzero_ext::*;
 
-fn main() {
-    let mut connector = &mut TlsConnector::builder();
+#[tokio::main]
+async fn main() {
+    env_logger::init();
+    let bucket = Arc::new(RateLimiter::direct(Quota::per_second(nonzero!(200u32))));
+    log::info!(target:"generator","Starting generator...");
 
-    for cert in rustls_native_certs::load_native_certs().expect("could not load platform certs") {
-        connector = connector.add_root_certificate(Certificate::from_der(&cert.0).unwrap())
+
+    loop {
+        let bucket = Arc::clone(&bucket);
+        tokio::spawn(async move {
+            match bucket.check() {
+                Ok(()) => {
+                    // Create new order
+                    log::info!(target:"generator","Creating new order...");
+                }
+                Err(err) => {
+                    // Don't create new order here.
+                    // log::error!(target:"generator", "Not creating new order.");
+                }
+            }
+        });
     }
 
-    let connector = MakeTlsConnector::new(connector.build().unwrap());
-
-    let mut client = postgres::Client::connect(
-        "postgres://tsdbadmin:ug2zlznqj3n0su1j@k1dzw28f9f.axbgu744ky.tsdb.cloud.timescale.com:38900/tsdb?sslmode=require",
-        connector,
-    ).unwrap();
-
-    let x = client.execute("CREATE TABLE measurement(
-                    time  TIMESTAMP WITH TIME ZONE NOT NULL,
-                    device_id OID NOT NULL,
-                    metrics JSONB NOT NULL);",&[]).unwrap();
-    println!("{:?}",x);
-
 }
-
-
-
-
 
